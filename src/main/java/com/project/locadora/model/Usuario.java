@@ -10,7 +10,7 @@ public class Usuario {
     @Column(name = "ID_USUARIO")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USUARIO_ID_SEQ")
     @SequenceGenerator(name="USUARIO_ID_SEQ", sequenceName = "USUARIO_ID_SEQ", allocationSize = 1, initialValue = 2)
-    private Long id;
+    private Long idUsuario;
 
     @Column(name = "EMAIL")
     private String email;
@@ -24,11 +24,11 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Long getId() {
-        return id;
+    public Long getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setIdUsuario(Long idUsuario) {
+        this.idUsuario = idUsuario;
     }
 }
