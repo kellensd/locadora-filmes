@@ -1,4 +1,4 @@
-package com.project.locadora.repositories;
+package com.project.locadora.repository;
 
 import com.project.locadora.model.Locacao;
 import org.springframework.data.jpa.repository.JpaRepository;
