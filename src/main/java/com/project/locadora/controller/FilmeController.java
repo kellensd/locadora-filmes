@@ -4,6 +4,7 @@ import com.project.locadora.dto.FilmeDTO;
 import com.project.locadora.dto.ResponseErrorDTO;
 import com.project.locadora.exception.FilmeIndisponivelException;
 import com.project.locadora.exception.FilmeInexistenteException;
+import com.project.locadora.model.Filme;
 import com.project.locadora.service.impl.FilmeServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -13,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
@@ -85,6 +88,27 @@ public class FilmeController {
                 return ResponseEntity.badRequest().body(new ResponseErrorDTO(ex.getMessage()));
             }
             return ResponseEntity.ok("Filme devolvido com sucesso!");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping
+    @ApiOperation(value = "Cadastrar um filme.")
+    public ResponseEntity create(@RequestBody FilmeDTO filmeDTO) throws URISyntaxException {
+        Filme filme = filmeService.create(filmeDTO);
+        return ResponseEntity.created(new URI(String.format("/filmes/%d", filme.getIdFilme())))
+                .build();
+    }
+
+    @DeleteMapping("/{id}")
+    @ApiOperation(value = "Excluir um filme.")
+    public ResponseEntity deleteById(@PathVariable Long id) {
+        Optional<Filme> filme = filmeService.findById(id);
+
+        if (filme.isPresent()) {
+            filmeService.delete(filme.get());
+            return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();
         }
