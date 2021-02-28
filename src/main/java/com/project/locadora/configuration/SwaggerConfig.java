@@ -2,6 +2,7 @@ package com.project.locadora.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -22,6 +23,8 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
                 .paths(PathSelectors.any())
                 .build()
+                .useDefaultResponseMessages(false)
+                .directModelSubstitute(ResponseEntity.class, java.lang.Void.class)
                 .apiInfo(informacoes());
     }
 
