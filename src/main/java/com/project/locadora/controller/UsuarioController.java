@@ -14,9 +14,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Validated
 @RestController
@@ -42,7 +45,7 @@ public class UsuarioController {
             }
     )
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity create(@RequestBody UsuarioIn usuarioIn) throws URISyntaxException {
+    public ResponseEntity create(@Valid @RequestBody UsuarioIn usuarioIn) throws URISyntaxException {
         Usuario usuario = usuarioService.create(usuarioIn);
         return ResponseEntity.created(new URI(String.format("/usuarios/%d", usuario.getIdUsuario())))
                 .build();
@@ -79,12 +82,36 @@ public class UsuarioController {
             }
     )
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<UsuarioDTO> findByTitulo(@PathVariable Long id) {
+    public ResponseEntity<UsuarioDTO> findById(@PathVariable Long id) {
         Optional<Usuario> usuario = usuarioService.findById(id);
 
         if (usuario.isPresent()) {
-            return ResponseEntity.ok(usuario.map(usuario1 -> modelMapper.map(usuario, UsuarioDTO.class))
-                            .get());
+            return ResponseEntity.ok(usuario.map(user -> modelMapper.map(user, UsuarioDTO.class))
+                    .get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping
+    @ApiOperation(value = "Consulta todos os usuários cadastrados.")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(code = 200, message = "Lista de usuários retornada com sucesso.",
+                            response = UsuarioDTO.class, responseContainer = "List"),
+                    @ApiResponse(code = 404, message = "Lista de usuários não encontrada."),
+                    @ApiResponse(code = 500, message = "Ocorreu um erro inesperado no servidor ao pesquisar os usuários.")
+            }
+    )
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<UsuarioDTO>> findAll() {
+        List<Usuario> usuarios = usuarioService.findAll();
+
+        if (!usuarios.isEmpty()) {
+            return ResponseEntity.ok(usuarios
+                    .stream()
+                    .map(usuario -> modelMapper.map(usuario, UsuarioDTO.class))
+                    .collect(Collectors.toList()));
         } else {
             return ResponseEntity.notFound().build();
         }
