@@ -39,7 +39,7 @@ public class FilmeController {
             value = {
                     @ApiResponse(code = 200, message = "Filme retornado com sucesso.", response = FilmeDTO.class),
                     @ApiResponse(code = 404, message = "Filme não encontrado."),
-                    @ApiResponse(code = 500, message = "Ocorreu um erro inesperado no servidor ao excluir o filme.")
+                    @ApiResponse(code = 500, message = "Ocorreu um erro inesperado no servidor ao pesquisar o filme.")
             }
     )
     @ResponseStatus(HttpStatus.OK)
@@ -60,7 +60,7 @@ public class FilmeController {
                     @ApiResponse(code = 200, message = "Lista de filmes retornada com sucesso.",
                             response = FilmeDTO.class, responseContainer = "List"),
                     @ApiResponse(code = 404, message = "Lista de filmes não encontrada."),
-                    @ApiResponse(code = 500, message = "Ocorreu um erro inesperado no servidor ao excluir o filme.")
+                    @ApiResponse(code = 500, message = "Ocorreu um erro inesperado no servidor ao pesquisar os filmes disponíveis.")
             }
     )
     @ResponseStatus(HttpStatus.OK)
@@ -81,7 +81,7 @@ public class FilmeController {
                     @ApiResponse(code = 200, message = "Filme alugado com sucesso."),
                     @ApiResponse(code = 400, message = "Filme indisponível para alugar!", response = ResponseErrorDTO.class),
                     @ApiResponse(code = 404, message = "Filme não encontrado."),
-                    @ApiResponse(code = 500, message = "Ocorreu um erro inesperado no servidor ao excluir o filme.")
+                    @ApiResponse(code = 500, message = "Ocorreu um erro inesperado no servidor ao alugar o filme.")
             }
     )
     @ResponseStatus(HttpStatus.OK)
@@ -108,7 +108,7 @@ public class FilmeController {
                     @ApiResponse(code = 200, message = "Filme devolvido com sucesso."),
                     @ApiResponse(code = 400, message = "Filme não existe no sistema!", response = ResponseErrorDTO.class),
                     @ApiResponse(code = 404, message = "Filme não encontrado."),
-                    @ApiResponse(code = 500, message = "Ocorreu um erro inesperado no servidor ao excluir o filme.")
+                    @ApiResponse(code = 500, message = "Ocorreu um erro inesperado no servidor ao devolver o filme.")
             }
     )
     @ResponseStatus(HttpStatus.OK)
