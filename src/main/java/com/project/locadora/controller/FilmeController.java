@@ -3,6 +3,7 @@ package com.project.locadora.controller;
 import com.project.locadora.dto.FilmeDTO;
 import com.project.locadora.dto.ResponseErrorDTO;
 import com.project.locadora.exception.FilmeIndisponivelException;
+import com.project.locadora.exception.FilmeInexistenteException;
 import com.project.locadora.service.impl.FilmeServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -71,6 +72,21 @@ public class FilmeController {
         }
     }
 
-    //todo
-    // devolução de um filme
+    @PatchMapping(value = "/devolucao/{titulo}")
+    @ApiOperation(value = "Devolução de filme.")
+    public ResponseEntity devolverFilme(@PathVariable String titulo) {
+        Optional<FilmeDTO> filme = filmeService.findByTitulo(titulo);
+
+        if (filme.isPresent()) {
+            try {
+                filmeService.devolverFilme(titulo);
+            } catch (FilmeInexistenteException ex) {
+                LOGGER.error("Erro ao devolver filme!", ex);
+                return ResponseEntity.badRequest().body(new ResponseErrorDTO(ex.getMessage()));
+            }
+            return ResponseEntity.ok("Filme devolvido com sucesso!");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
