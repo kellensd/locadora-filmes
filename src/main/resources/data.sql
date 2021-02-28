@@ -40,4 +40,4 @@ VALUES(2, 'Homem-Aranha: Longe de Casa', 'Jon Watts', 1);
 INSERT INTO FILME(ID_FILME, TITULO, DIRETOR, QUANTIDADE)
 VALUES(3, 'Velozes & Furiosos: Hobbs & Shaw', 'David Leitch', 1);
 INSERT INTO FILME(ID_FILME, TITULO, DIRETOR, QUANTIDADE)
-VALUES(4, 'Interestelar', 'Christopher Nolan', 1);
+VALUES(4, 'Interestelar', 'Christopher Nolan', 0);
