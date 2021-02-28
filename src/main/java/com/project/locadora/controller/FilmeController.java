@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Optional;
 
 @Validated
@@ -28,17 +29,28 @@ public class FilmeController {
     @GetMapping(value = "/{titulo}")
     @ApiOperation(value = "Pesquisa de filme pelo título.")
     public ResponseEntity<Optional<FilmeDTO>> findByTitulo(@PathVariable String titulo) {
-        Optional<FilmeDTO> filmeDTO = filmeService.findByTitulo(titulo);
+        Optional<FilmeDTO> filmes = filmeService.findByTitulo(titulo);
 
-        if (filmeDTO.isPresent()) {
-            return ResponseEntity.ok(filmeDTO);
+        if (filmes.isPresent()) {
+            return ResponseEntity.ok(filmes);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping(value = "/disponiveis")
+    @ApiOperation(value = "Consulta de filmes disponíveis.")
+    public ResponseEntity<List<FilmeDTO>> findFilmesDisponiveis() {
+        List<FilmeDTO> filmes = filmeService.findFilmesDisponiveis();
+
+        if (!filmes.isEmpty()) {
+            return ResponseEntity.ok(filmes);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
     //todo
-    //listagem de filmes disponíveis
     // locação de um filme
     // devolução de um filme
 }
