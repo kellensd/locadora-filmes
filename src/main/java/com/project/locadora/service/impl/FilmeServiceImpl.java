@@ -2,6 +2,7 @@ package com.project.locadora.service.impl;
 
 import com.project.locadora.dto.FilmeDTO;
 import com.project.locadora.exception.FilmeIndisponivelException;
+import com.project.locadora.exception.FilmeInexistenteException;
 import com.project.locadora.model.Filme;
 import com.project.locadora.repository.FilmeRepository;
 import com.project.locadora.service.FilmeService;
@@ -46,6 +47,15 @@ public class FilmeServiceImpl implements FilmeService {
                 .orElseThrow(() -> new FilmeIndisponivelException("Filme indisponível para alugar!"));
 
         filme.locarFilme();
+        filmeRepository.save(filme);
+    }
+
+    @Override
+    public void devolverFilme(String titulo) throws FilmeInexistenteException {
+        Filme filme = filmeRepository.findByTituloIgnoreCase(titulo)
+                .orElseThrow(() -> new FilmeInexistenteException("Filme não existe no sistema!"));
+
+        filme.devolverFilme();
         filmeRepository.save(filme);
     }
 }
