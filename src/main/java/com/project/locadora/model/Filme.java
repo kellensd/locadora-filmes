@@ -48,5 +48,7 @@ public class Filme {
         this.quantidade = this.quantidade - 1;
     }
 
-    //todo sets
+    public void devolverFilme() {
+        this.quantidade = this.quantidade + 1;
+    }
 }
