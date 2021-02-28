@@ -58,4 +58,20 @@ public class FilmeServiceImpl implements FilmeService {
         filme.devolverFilme();
         filmeRepository.save(filme);
     }
+
+    @Override
+    public Filme create(FilmeDTO filmeDTO) {
+        Filme filme = new Filme(filmeDTO);
+        return filmeRepository.save(filme);
+    }
+
+    @Override
+    public Optional<Filme> findById(Long id) {
+        return filmeRepository.findById(id);
+    }
+
+    @Override
+    public void delete(Filme filme) {
+        filmeRepository.delete(filme);
+    }
 }
