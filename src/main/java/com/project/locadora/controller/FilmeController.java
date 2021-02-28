@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -137,7 +138,7 @@ public class FilmeController {
             }
     )
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity create(@RequestBody FilmeDTO filmeDTO) throws URISyntaxException {
+    public ResponseEntity create(@Valid @RequestBody FilmeDTO filmeDTO) throws URISyntaxException {
         Filme filme = filmeService.create(filmeDTO);
         return ResponseEntity.created(new URI(String.format("/filmes/%d", filme.getIdFilme())))
                 .build();

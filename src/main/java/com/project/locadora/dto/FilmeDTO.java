@@ -1,9 +1,21 @@
 package com.project.locadora.dto;
 
+import io.swagger.annotations.ApiModelProperty;
+
+import javax.validation.constraints.NotNull;
+
 public class FilmeDTO {
 
+    @ApiModelProperty(notes = "Titulo do Filme")
+    @NotNull
     private String titulo;
+
+    @ApiModelProperty(notes = "Diretor do Filme")
+    @NotNull
     private String diretor;
+
+    @ApiModelProperty(notes = "Quantidade do Filme")
+    @NotNull
     private int quantidade;
 
     public String getTitulo() {
