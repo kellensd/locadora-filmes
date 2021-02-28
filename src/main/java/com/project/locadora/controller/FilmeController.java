@@ -1,15 +1,16 @@
 package com.project.locadora.controller;
 
 import com.project.locadora.dto.FilmeDTO;
+import com.project.locadora.dto.ResponseErrorDTO;
+import com.project.locadora.exception.FilmeIndisponivelException;
 import com.project.locadora.service.impl.FilmeServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +21,8 @@ import java.util.Optional;
 @Api(tags = "Filmes")
 public class FilmeController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(FilmeController.class);
+
     private FilmeServiceImpl filmeService;
 
     public FilmeController(FilmeServiceImpl filmeService) {
@@ -29,10 +32,10 @@ public class FilmeController {
     @GetMapping(value = "/{titulo}")
     @ApiOperation(value = "Pesquisa de filme pelo título.")
     public ResponseEntity<Optional<FilmeDTO>> findByTitulo(@PathVariable String titulo) {
-        Optional<FilmeDTO> filmes = filmeService.findByTitulo(titulo);
+        Optional<FilmeDTO> filme = filmeService.findByTitulo(titulo);
 
-        if (filmes.isPresent()) {
-            return ResponseEntity.ok(filmes);
+        if (filme.isPresent()) {
+            return ResponseEntity.ok(filme);
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -50,7 +53,24 @@ public class FilmeController {
         }
     }
 
+    @PatchMapping(value = "/locacao/{titulo}")
+    @ApiOperation(value = "Locação de filme.")
+    public ResponseEntity locarFilme(@PathVariable String titulo) {
+        Optional<FilmeDTO> filme = filmeService.findByTitulo(titulo);
+
+        if (filme.isPresent()) {
+            try {
+                filmeService.locarFilme(titulo);
+            } catch (FilmeIndisponivelException ex) {
+                LOGGER.error("Erro ao locar filme!", ex);
+                return ResponseEntity.badRequest().body(new ResponseErrorDTO(ex.getMessage()));
+            }
+            return ResponseEntity.ok("Filme alugado com sucesso!");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     //todo
-    // locação de um filme
     // devolução de um filme
 }
