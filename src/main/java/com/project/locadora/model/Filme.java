@@ -1,5 +1,7 @@
 package com.project.locadora.model;
 
+import com.project.locadora.dto.FilmeDTO;
+
 import javax.persistence.*;
 
 @Entity
@@ -22,6 +24,12 @@ public class Filme {
     private int quantidade;
 
     public Filme() {
+    }
+
+    public Filme(FilmeDTO filmeDTO) {
+        this.titulo = filmeDTO.getTitulo();
+        this.diretor = filmeDTO.getDiretor();
+        this.quantidade = filmeDTO.getQuantidade();
     }
 
     public Long getIdFilme() {
