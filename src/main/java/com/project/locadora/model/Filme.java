@@ -18,6 +18,9 @@ public class Filme {
     @Column(name = "DIRETOR")
     private String diretor;
 
+    @Column(name = "QUANTIDADE")
+    private int quantidade;
+
     public Filme() {
     }
 
@@ -35,6 +38,10 @@ public class Filme {
 
     public String getDiretor() {
         return diretor;
+    }
+
+    public int getQuantidade() {
+        return quantidade;
     }
 
     //todo sets
