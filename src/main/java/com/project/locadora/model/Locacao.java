@@ -28,4 +28,6 @@ public class Locacao {
     public void setIdLocacaoFilme(Long idLocacaoFilme) {
         this.idLocacaoFilme = idLocacaoFilme;
     }
+
+    //todo gets e sets
 }

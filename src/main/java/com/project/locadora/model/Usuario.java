@@ -31,4 +31,6 @@ public class Usuario {
     public void setIdUsuario(Long idUsuario) {
         this.idUsuario = idUsuario;
     }
+
+    //todo gets e sets
 }

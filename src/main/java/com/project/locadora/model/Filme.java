@@ -28,4 +28,14 @@ public class Filme {
     public void setIdFilme(Long idFilme) {
         this.idFilme = idFilme;
     }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public String getDiretor() {
+        return diretor;
+    }
+
+    //todo sets
 }
