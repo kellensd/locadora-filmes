@@ -1,5 +1,7 @@
 package com.project.locadora.model;
 
+import com.project.locadora.representation.UsuarioIn;
+
 import javax.persistence.*;
 
 @Entity
@@ -22,6 +24,12 @@ public class Usuario {
     private String senha;
 
     public Usuario() {
+    }
+
+    public Usuario(UsuarioIn usuarioIn) {
+        this.email = usuarioIn.getEmail();
+        this.nomeCompleto = usuarioIn.getNomeCompleto();
+        this.senha = usuarioIn.getSenha();
     }
 
     public Long getIdUsuario() {
