@@ -1,5 +1,6 @@
 package com.project.locadora.representation;
 
+import com.project.locadora.business.Criptografia;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
@@ -39,6 +40,6 @@ public class UsuarioIn {
     }
 
     public void setSenha(String senha) {
-        this.senha = senha;
+        this.senha = Criptografia.getHashMd5(senha);
     }
 }
