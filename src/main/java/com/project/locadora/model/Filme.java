@@ -44,5 +44,9 @@ public class Filme {
         return quantidade;
     }
 
+    public void locarFilme() {
+        this.quantidade = this.quantidade - 1;
+    }
+
     //todo sets
 }
