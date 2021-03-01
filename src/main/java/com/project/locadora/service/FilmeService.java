@@ -10,9 +10,9 @@ import java.util.Optional;
 
 public interface FilmeService {
 
-    Optional<FilmeDTO> findByTitulo(String titulo);
+    Optional<Filme> findByTitulo(String titulo);
 
-    List<FilmeDTO> findFilmesDisponiveis();
+    List<Filme> findFilmesDisponiveis();
 
     void locarFilme(String titulo) throws FilmeIndisponivelException;
 
