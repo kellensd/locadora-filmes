@@ -7,6 +7,7 @@ import com.project.locadora.exception.FilmeInexistenteException;
 import com.project.locadora.model.Filme;
 import com.project.locadora.service.impl.FilmeServiceImpl;
 import io.swagger.annotations.*;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Validated
 @RestController
@@ -30,8 +32,11 @@ public class FilmeController {
 
     private FilmeServiceImpl filmeService;
 
-    public FilmeController(FilmeServiceImpl filmeService) {
+    private ModelMapper modelMapper;
+
+    public FilmeController(FilmeServiceImpl filmeService, ModelMapper modelMapper) {
         this.filmeService = filmeService;
+        this.modelMapper = modelMapper;
     }
 
     @GetMapping(value = "/{titulo}")
@@ -45,10 +50,11 @@ public class FilmeController {
     )
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<FilmeDTO> findByTitulo(@PathVariable String titulo) {
-        Optional<FilmeDTO> filme = filmeService.findByTitulo(titulo);
+        Optional<Filme> filme = filmeService.findByTitulo(titulo);
 
         if (filme.isPresent()) {
-            return ResponseEntity.ok(filme.get());
+            return ResponseEntity.ok(filme.map(film -> modelMapper.map(film, FilmeDTO.class))
+                    .get());
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -66,10 +72,13 @@ public class FilmeController {
     )
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<FilmeDTO>> findFilmesDisponiveis() {
-        List<FilmeDTO> filmes = filmeService.findFilmesDisponiveis();
+        List<Filme> filmes = filmeService.findFilmesDisponiveis();
 
         if (!filmes.isEmpty()) {
-            return ResponseEntity.ok(filmes);
+            return ResponseEntity.ok(filmes
+                    .stream()
+                    .map(filme -> modelMapper.map(filme, FilmeDTO.class))
+                    .collect(Collectors.toList()));
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -87,7 +96,7 @@ public class FilmeController {
     )
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity locarFilme(@PathVariable String titulo) {
-        Optional<FilmeDTO> filme = filmeService.findByTitulo(titulo);
+        Optional<Filme> filme = filmeService.findByTitulo(titulo);
 
         if (filme.isPresent()) {
             try {
@@ -114,7 +123,7 @@ public class FilmeController {
     )
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity devolverFilme(@PathVariable String titulo) {
-        Optional<FilmeDTO> filme = filmeService.findByTitulo(titulo);
+        Optional<Filme> filme = filmeService.findByTitulo(titulo);
 
         if (filme.isPresent()) {
             try {
