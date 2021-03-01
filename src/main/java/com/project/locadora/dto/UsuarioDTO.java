@@ -3,7 +3,7 @@ package com.project.locadora.dto;
 public class UsuarioDTO {
 
     private String email;
-    private String nomeCompleto;
+    private String nome;
 
     public String getEmail() {
         return email;
@@ -13,11 +13,11 @@ public class UsuarioDTO {
         this.email = email;
     }
 
-    public String getNomeCompleto() {
-        return nomeCompleto;
+    public String getNome() {
+        return nome;
     }
 
-    public void setNomeCompleto(String nomeCompleto) {
-        this.nomeCompleto = nomeCompleto;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 }
