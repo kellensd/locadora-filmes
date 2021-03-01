@@ -1,7 +1,9 @@
 package com.project.locadora.controller;
 
 import com.project.locadora.configuration.CustomAuthenticationProvider;
+import com.project.locadora.configuration.ModelMapperConfig;
 import com.project.locadora.dto.FilmeDTO;
+import com.project.locadora.model.Filme;
 import com.project.locadora.service.impl.FilmeServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -23,6 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(FilmeController.class)
+@Import(ModelMapperConfig.class)
 public class FilmeControllerTest {
 
     @MockBean
@@ -35,6 +39,7 @@ public class FilmeControllerTest {
     private MockMvc mockMvc;
 
     FilmeDTO filmeDTO;
+    Filme filme;
 
     @Before
     public void setUp() {
@@ -42,13 +47,15 @@ public class FilmeControllerTest {
         filmeDTO.setDiretor("Eu");
         filmeDTO.setQuantidade(10);
         filmeDTO.setTitulo("cascata");
+
+        filme = new Filme(filmeDTO);
     }
 
 
     @Test
     @WithMockUser(username = "kellen", password = "teste123", roles = "USER")
     public void findByTituloTest() throws Exception {
-        when(filmeService.findByTitulo("cascata")).thenReturn(Optional.of(filmeDTO));
+        when(filmeService.findByTitulo("cascata")).thenReturn(Optional.of(filme));
 
         mockMvc.perform(get("/filmes/{titulo}", "cascata"))
                 .andExpect(status().isOk())
@@ -67,7 +74,7 @@ public class FilmeControllerTest {
     @Test
     @WithMockUser(username = "kellen", password = "teste123", roles = "USER")
     public void findFilmesDisponiveisTest() throws Exception {
-        when(filmeService.findFilmesDisponiveis()).thenReturn(List.of(filmeDTO));
+        when(filmeService.findFilmesDisponiveis()).thenReturn(List.of(filme));
 
         mockMvc.perform(get("/filmes/disponiveis"))
                 .andExpect(status().isOk())
