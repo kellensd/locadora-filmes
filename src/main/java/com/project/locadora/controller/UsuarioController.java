@@ -1,5 +1,6 @@
 package com.project.locadora.controller;
 
+import com.project.locadora.dto.ResponseErrorDTO;
 import com.project.locadora.dto.UsuarioDTO;
 import com.project.locadora.model.Usuario;
 import com.project.locadora.representation.UsuarioIn;
@@ -9,6 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.modelmapper.ModelMapper;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -41,6 +43,7 @@ public class UsuarioController {
     @ApiResponses(
             value = {
                     @ApiResponse(code = 201, message = "Usuário cadastrado com sucesso."),
+                    @ApiResponse(code = 400, message = "Usuário já existente na base. Cadastre outro!"),
                     @ApiResponse(code = 500, message = "Ocorreu um erro inesperado no servidor ao cadastrar o usuário.")
             }
     )
@@ -115,5 +118,13 @@ public class UsuarioController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ResponseErrorDTO> handleConstraintViolation(DataIntegrityViolationException ex) {
+        ResponseErrorDTO responseErrorDTO = new ResponseErrorDTO("Usuário já existente na base. Cadastre outro!");
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(responseErrorDTO);
     }
 }

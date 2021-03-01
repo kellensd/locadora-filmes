@@ -10,6 +10,7 @@ import io.swagger.annotations.*;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -143,6 +144,7 @@ public class FilmeController {
     @ApiResponses(
             value = {
                     @ApiResponse(code = 201, message = "Filme cadastrado com sucesso."),
+                    @ApiResponse(code = 400, message = "Filme já existente na base. Cadastre outro!"),
                     @ApiResponse(code = 500, message = "Ocorreu um erro inesperado no servidor ao cadastrar o filme.")
             }
     )
@@ -172,5 +174,13 @@ public class FilmeController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ResponseErrorDTO> handleConstraintViolation(DataIntegrityViolationException ex) {
+        ResponseErrorDTO responseErrorDTO = new ResponseErrorDTO("Filme já existente na base. Cadastre outro!");
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(responseErrorDTO);
     }
 }

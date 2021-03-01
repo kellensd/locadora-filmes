@@ -14,7 +14,7 @@ public class Filme {
     @SequenceGenerator(name="FILME_ID_SEQ", sequenceName = "FILME_ID_SEQ", allocationSize = 1, initialValue = 5)
     private Long idFilme;
 
-    @Column(name = "TITULO")
+    @Column(name = "TITULO", unique = true)
     private String titulo;
 
     @Column(name = "DIRETOR")
