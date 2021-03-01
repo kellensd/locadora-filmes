@@ -11,9 +11,9 @@ public class UsuarioIn {
     @NotNull
     private String email;
 
-    @ApiModelProperty(notes = "Nome Completo do Usuário")
+    @ApiModelProperty(notes = "Nome do Usuário")
     @NotNull
-    private String nomeCompleto;
+    private String nome;
 
     @ApiModelProperty(notes = "Senha do Usuário")
     @NotNull
@@ -27,12 +27,12 @@ public class UsuarioIn {
         this.email = email;
     }
 
-    public String getNomeCompleto() {
-        return nomeCompleto;
+    public String getNome() {
+        return nome;
     }
 
-    public void setNomeCompleto(String nomeCompleto) {
-        this.nomeCompleto = nomeCompleto;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public String getSenha() {
