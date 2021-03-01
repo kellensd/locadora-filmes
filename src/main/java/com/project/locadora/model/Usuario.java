@@ -17,8 +17,8 @@ public class Usuario {
     @Column(name = "EMAIL")
     private String email;
 
-    @Column(name = "NOME_COMPLETO")
-    private String nomeCompleto;
+    @Column(name = "NAME")
+    private String nome;
 
     @Column(name = "SENHA")
     private String senha;
@@ -28,7 +28,7 @@ public class Usuario {
 
     public Usuario(UsuarioIn usuarioIn) {
         this.email = usuarioIn.getEmail();
-        this.nomeCompleto = usuarioIn.getNomeCompleto();
+        this.nome = usuarioIn.getNome();
         this.senha = usuarioIn.getSenha();
     }
 
@@ -48,12 +48,12 @@ public class Usuario {
         this.email = email;
     }
 
-    public String getNomeCompleto() {
-        return nomeCompleto;
+    public String getNome() {
+        return nome;
     }
 
-    public void setNomeCompleto(String nomeCompleto) {
-        this.nomeCompleto = nomeCompleto;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public String getSenha() {
