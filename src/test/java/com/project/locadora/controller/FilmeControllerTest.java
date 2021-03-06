@@ -1,6 +1,6 @@
 package com.project.locadora.controller;
 
-import com.project.locadora.configuration.CustomAuthenticationProvider;
+import com.project.locadora.configuration.security.CustomAuthenticationProvider;
 import com.project.locadora.configuration.ModelMapperConfig;
 import com.project.locadora.dto.FilmeDTO;
 import com.project.locadora.model.Filme;

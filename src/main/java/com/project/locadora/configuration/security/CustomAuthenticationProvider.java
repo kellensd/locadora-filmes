@@ -1,4 +1,4 @@
-package com.project.locadora.configuration;
+package com.project.locadora.configuration.security;
 
 import com.project.locadora.business.Criptografia;
 import com.project.locadora.model.Usuario;
