@@ -10,7 +10,6 @@ import io.swagger.annotations.*;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -96,16 +95,11 @@ public class FilmeController {
             }
     )
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity locarFilme(@PathVariable String titulo) {
+    public ResponseEntity locarFilme(@PathVariable String titulo) throws FilmeIndisponivelException {
         Optional<Filme> filme = filmeService.findByTitulo(titulo);
 
         if (filme.isPresent()) {
-            try {
-                filmeService.locarFilme(titulo);
-            } catch (FilmeIndisponivelException ex) {
-                LOGGER.error("Erro ao locar filme!", ex);
-                return ResponseEntity.badRequest().body(new ResponseErrorDTO(ex.getMessage()));
-            }
+            filmeService.locarFilme(titulo);
             return ResponseEntity.ok("Filme alugado com sucesso!");
         } else {
             return ResponseEntity.notFound().build();
@@ -123,16 +117,11 @@ public class FilmeController {
             }
     )
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity devolverFilme(@PathVariable String titulo) {
+    public ResponseEntity devolverFilme(@PathVariable String titulo) throws FilmeInexistenteException {
         Optional<Filme> filme = filmeService.findByTitulo(titulo);
 
         if (filme.isPresent()) {
-            try {
-                filmeService.devolverFilme(titulo);
-            } catch (FilmeInexistenteException ex) {
-                LOGGER.error("Erro ao devolver filme!", ex);
-                return ResponseEntity.badRequest().body(new ResponseErrorDTO(ex.getMessage()));
-            }
+            filmeService.devolverFilme(titulo);
             return ResponseEntity.ok("Filme devolvido com sucesso!");
         } else {
             return ResponseEntity.notFound().build();
@@ -174,13 +163,5 @@ public class FilmeController {
         } else {
             return ResponseEntity.notFound().build();
         }
-    }
-
-    @ExceptionHandler
-    public ResponseEntity<ResponseErrorDTO> handleConstraintViolation(DataIntegrityViolationException ex) {
-        ResponseErrorDTO responseErrorDTO = new ResponseErrorDTO("Filme já existente na base. Cadastre outro!");
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(responseErrorDTO);
     }
 }
